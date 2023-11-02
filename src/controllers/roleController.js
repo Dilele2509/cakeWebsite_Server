@@ -4,7 +4,6 @@ const roleData = require('../data/roles');
 
 const getAllRoles = async (req, res, next) => {
     try {
-
         const rolelist = await roleData.getRole();
         //console.log(rolelist)
         res.send(rolelist);        

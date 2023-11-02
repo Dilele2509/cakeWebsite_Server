@@ -8,7 +8,7 @@ const getRole = async () => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('roles/sql');
-        //console.log(sqlQueries);
+        console.log(sqlQueries);
         const roleList = await pool.request().query(sqlQueries.roleList);
         return roleList.recordset;
     } catch (error) {
