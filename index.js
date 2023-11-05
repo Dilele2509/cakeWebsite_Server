@@ -21,14 +21,15 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //link to the routes of each type
-//app.use('/', categoryRoutes.routes);
-//app.use('/', feedbackRoutes.routes);
-//app.use('/', manage_galleryRoutes.routes);
-//app.use('/', order_detailRoutes.routes);
-//app.use('/', orderRoutes.routes);
-//app.use('/', productRoutes.routes);
 app.use('/', roleRoutes.routes);
-//app.use('/', userRoutes.routes);
+app.use('/', userRoutes.routes);
+app.use('/', categoryRoutes.routes);
+app.use('/', feedbackRoutes.routes);
+app.use('/', orderRoutes.routes);
+app.use('/', manage_galleryRoutes.routes);
+app.use('/', order_detailRoutes.routes);
+app.use('/', productRoutes.routes);
+
 
 app.listen(config.port, () => {
   console.log('app listening on url http://localhost:' + config.port )

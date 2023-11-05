@@ -6,7 +6,7 @@ INSERT INTO [dbo].[users]
         [email],
         [phone_num],
         [address],
-        [passwork],
+        [password],
         [deleted]
     )
 VALUES 
@@ -17,7 +17,7 @@ VALUES
         @email, 
         @phone_num, 
         @address, 
-        @passwork, 
+        @password, 
         @deleted
     )
 

@@ -3,13 +3,12 @@ const utils = require('../utils');
 const config = require('../../../config');
 const sql = require('mssql');
 
-
-/* viết các hàm tương tự bên roles/index.js */
 const getUser = async () => {
     try {
         let pool = await sql.connect(config.sql);
+        //console.log(pool);
         const sqlQueries = await utils.loadSqlQueries('users/sql');
-        //console.log(sqlQueries);
+        console.log(sqlQueries);
         const userList = await pool.request().query(sqlQueries.userList);
         return userList.recordset;
     } catch (error) {
@@ -41,7 +40,7 @@ const createUser = async (data) => {
                             .input('email', sql.Char(50), data.email)
                             .input('phone_num', sql.Char(10), data.phone_num)
                             .input('address', sql.NVarChar(50), data.address)
-                            .input('passwork', sql.NVarChar(10), data.passwork)
+                            .input('password', sql.NVarChar(10), data.password)
                             .input('deleted', sql.TinyInt, data.deleted)
                             .query(sqlQueries.createUser);                            
         return insert.recordset;

@@ -2,12 +2,11 @@
 
 const userData = require('../data/users');
 
-/* viết hàm tương tự với roleController */
 const getAllUsers = async (req, res, next) => {
     try {
 
         const userList = await userData.getUser();
-        //console.log(rolelist)
+        //console.log(userList)
         res.send(userList);        
     } catch (error) {
         res.status(400).send(error.message);
@@ -56,7 +55,6 @@ const deleteUser = async (req, res, next) => {
 }
 
 module.exports = {
-    /* viết xong r export nó ra đây */
     getAllUsers,
     getUserById,
     addUser,

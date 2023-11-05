@@ -6,7 +6,7 @@ const categoryData = require('../data/category');
 const getAllCategories = async (req, res, next) => {
     try {
 
-        const categoryList = await categoryData.getCaterogy();
+        const categoryList = await categoryData.getCategory();
         //console.log(rolelist)
         res.send(categoryList);        
     } catch (error) {
