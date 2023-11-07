@@ -8,7 +8,7 @@ const sql = require('mssql');
 const getProduct = async () => {
     try {
         let pool = await sql.connect(config.sql);
-        const sqlQueries = await utils.loadSqlQueries('poducts/sql');
+        const sqlQueries = await utils.loadSqlQueries('products/sql');
         console.log(sqlQueries);
         const productList = await pool.request().query(sqlQueries.productList);
         return productList.recordset;
@@ -30,6 +30,19 @@ const getById = async(data) => {
     }
 }
 
+const getByCat = async (data) => {
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('products/sql');
+        const event = await pool.request()
+                            .input('category_id', sql.Int, data.category_id)
+                            .query(sqlQueries.getProductByCat);
+        return event.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
 const createProduct = async (data) => {
     try {
         let pool = await sql.connect(config.sql);
@@ -40,10 +53,10 @@ const createProduct = async (data) => {
                             .input('price', sql.Float, data.price)
                             .input('size', sql.NVarChar(50), data.size)
                             .input('size_price', sql.Float, data.size_price)
-                            .input('ingredients', sql.NVarChar(50), data.ingredients)
+                            .input('ingredients', sql.Text, data.ingredients)
                             .input('discount_price', sql.Float, data.discount_price)
                             .input('thumbnail', sql.NVarChar(50), data.thumbnail)
-                            .input('description', sql.NVarChar(sql.MAX), data.description)
+                            .input('description', sql.Text, data.description)
                             .input('quantity', sql.Int, data.quantity)
                             .input('total', sql.Float, data.total)
                             .input('deleted', sql.TinyInt, data.deleted)
@@ -79,6 +92,21 @@ const updateProduct = async (data) => {
     }
 }
 
+const updateSizeProduct = async (data) => {
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('products/sql');
+        console.log(sqlQueries.updateSize);
+        const update = await pool.request()
+                        .input('id', sql.Int, data.id)
+                        .input('size', sql.NVarChar(50), data.size)
+                        .query(sqlQueries.updateSize);
+        return update.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
 const deleteProduct = async (data) => {
     try {
         let pool = await sql.connect(config.sql);
@@ -93,10 +121,11 @@ const deleteProduct = async (data) => {
 }
 
 module.exports = {
-    /* exports các hàm get, getById, create, update, delete tương tự như bên roles/index.js */
     getProduct,
     getById,
+    getByCat,
     createProduct,
     updateProduct,
+    updateSizeProduct,
     deleteProduct
 }

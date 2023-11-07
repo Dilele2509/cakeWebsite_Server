@@ -1,14 +1,15 @@
 'use strict';
 
 const express = require('express');
-const orderdetailController = require('../controllers/order_detailController');    //đối với các file khác thì nhớ sửa lại
+const orderdetailController = require('../controllers/order_detailController');    
 const router = express.Router();
 
-router.get('/orderdetails', orderdetailController.getAllOrderdetails);   //nhớ sửa lại các tên hàm sau dấu chấm tương ứng với tên hàm mình đặt bên controller
-router.get('/orderdetail/', orderdetailController.getOrderdetailById);
-router.post('/orderdetail/', orderdetailController.addOrderdetail);
-router.put('/orderdetail/', orderdetailController.updateOrderdetail);
-router.delete('/orderdetail/', orderdetailController.deleteOrderdetail);
+router.get('/order-details', orderdetailController.getAllOrderdetails);   
+router.post('/order-detail/id/', orderdetailController.getOrderdetailById);
+router.post('/order-detail/add/', orderdetailController.addOrderdetail);
+router.put('/order-detail/', orderdetailController.updateOrderdetail);
+router.put('/order-detail/quantity/', orderdetailController.updateQuantOD);
+router.delete('/order-detail/', orderdetailController.deleteOrderdetail);
 
 
 module.exports = {

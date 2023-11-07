@@ -21,14 +21,14 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //link to the routes of each type
-app.use('/', roleRoutes.routes);
-app.use('/', userRoutes.routes);
-app.use('/', categoryRoutes.routes);
-app.use('/', feedbackRoutes.routes);
-app.use('/', orderRoutes.routes);
-app.use('/', manage_galleryRoutes.routes);
-app.use('/', order_detailRoutes.routes);
-app.use('/', productRoutes.routes);
+app.use('/api/', roleRoutes.routes);
+app.use('/api/', userRoutes.routes);
+app.use('/api/', categoryRoutes.routes);
+app.use('/api/', feedbackRoutes.routes);
+app.use('/api/', orderRoutes.routes);
+app.use('/api/', manage_galleryRoutes.routes);
+app.use('/api/', order_detailRoutes.routes);
+app.use('/api/', productRoutes.routes);
 
 
 app.listen(config.port, () => {

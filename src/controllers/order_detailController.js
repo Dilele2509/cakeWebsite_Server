@@ -45,6 +45,16 @@ const updateOrderdetail = async (req, res, next) => {
     }
 }
 
+const updateQuantOD = async(req, res, next)=>{
+    try {
+        const data = req.body;
+        const updated = await orderdetailData.updateQuantOD(data);
+        res.send(updated);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 const deleteOrderdetail = async (req, res, next) => {
     try {
         const data = req.body;
@@ -56,10 +66,10 @@ const deleteOrderdetail = async (req, res, next) => {
 }
 
 module.exports = {
-    /* viết xong r export nó ra đây */
     getAllOrderdetails,
     getOrderdetailById,
     addOrderdetail,
     updateOrderdetail,
+    updateQuantOD,
     deleteOrderdetail
 }

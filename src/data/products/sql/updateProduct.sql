@@ -11,7 +11,7 @@ SET [category_id]=@category_id,
     [quantity]=@quantity,
     [total]=@total,
     [deleted]=@deleted
-WHERE [id]=@id
+WHERE [id]=@id;
 
 SELECT * FROM [dbo].[products]
 WHERE [id]=@id

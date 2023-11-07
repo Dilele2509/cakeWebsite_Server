@@ -1,19 +1,16 @@
 INSERT INTO [dbo].[order_details]
     (
-        [order_id],
         [product_id],
+        [product_size],
         [price],
-        [quantity],
-        [total]
+        [quantity]
     )
 VALUES 
     (
-        @order_id,
         @product_id,
+        @product_size,
         @price,
-        @quantity,
-        @total
+        @quantity
     )
 
 SELECT * FROM [dbo].[order_details]
-WHERE [id]=id

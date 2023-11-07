@@ -1,13 +1,15 @@
 'use strict';
 
 const express = require('express');
-const productController = require('../controllers/productController');    //đối với các file khác thì nhớ sửa lại
+const productController = require('../controllers/productController');  
 const router = express.Router();
 
-router.get('/products', productController.getAllProducts);   //nhớ sửa lại các tên hàm sau dấu chấm tương ứng với tên hàm mình đặt bên controller
-router.get('/product/', productController.getProductById);
-router.post('/product/', productController.addProduct);
+router.get('/products', productController.getAllProducts);  
+router.post('/product/id/', productController.getProductById);
+router.post('/product/cat/', productController.getProductByCat);
+router.post('/product/add/', productController.addProduct);
 router.put('/product/', productController.updateProduct);
+router.put('/product/size/', productController.updateSizeProduct);
 router.delete('/product/', productController.deleteProduct);
 
 

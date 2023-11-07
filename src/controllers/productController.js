@@ -1,8 +1,7 @@
 'use strict';
 
-const productData = require('../data/products'); //đổi tên biến tương tự với tên file tương ứng
+const productData = require('../data/products');
 
-/* viết hàm tương tự với roleController */
 const getAllProducts = async (req, res, next) => {
     try {
 
@@ -18,7 +17,17 @@ const getProductById = async (req, res, next) => {
     try {
         const data = req.body;
         const product = await productData.getById(data);
-        console.log(product, data);
+        //console.log(product, data);
+        res.send(product);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+const getProductByCat = async (req, res, next) => {
+    try {
+        const data = req.body;
+        const product = await productData.getByCat(data);
         res.send(product);
     } catch (error) {
         res.status(400).send(error.message);
@@ -45,6 +54,16 @@ const updateProduct = async (req, res, next) => {
     }
 }
 
+const updateSizeProduct = async (req, res, next) => {
+    try {
+        const data = req.body;
+        const updated = await productData.updateSizeProduct(data);
+        res.send(updated);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 const deleteProduct = async (req, res, next) => {
     try {
         const data = req.body;
@@ -56,10 +75,11 @@ const deleteProduct = async (req, res, next) => {
 }
 
 module.exports = {
-    /* viết xong r export nó ra đây */
     getAllProducts,
     getProductById,
+    getProductByCat,
     addProduct, 
     updateProduct, 
+    updateSizeProduct,
     deleteProduct
 }
