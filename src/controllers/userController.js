@@ -25,10 +25,21 @@ const getUserById = async (req, res, next) => {
 }
 
 const addUser = async (req, res, next) => {
+    
     try {
         const data = req.body;
-        const insert = await userData.createUser(data);
-        res.send(insert);
+        const checkExist = await userData.checkEmailExist(data.email)
+        //console.log('check email exist: ', checkExist);
+
+        if(checkExist != 1){
+            const insert = await userData.createUser(data);
+            res.send(insert);
+        }else {
+            res.send({
+                status: 'Error',
+                message: 'This is email already exists'
+            })
+        }
     } catch (error) {
         res.status(400).send(error.message);
     }

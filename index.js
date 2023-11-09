@@ -13,6 +13,7 @@ const orderRoutes = require('./src/routes/orderRoutes');
 const productRoutes = require('./src/routes/productRoutes');
 const roleRoutes = require('./src/routes/roleRoutes');
 const userRoutes = require('./src/routes/userRoutes');
+const loginRoutes = require('./src/routes/loginRoutes');
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 //link to the routes of each type
+app.use('/api/', loginRoutes.routes);
 app.use('/api/', roleRoutes.routes);
 app.use('/api/', userRoutes.routes);
 app.use('/api/', categoryRoutes.routes);

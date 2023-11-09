@@ -1,25 +1,12 @@
 INSERT INTO [dbo].[users]
     (
-        [role_id],
         [fullname],
-        [gender],
         [email],
-        [phone_num],
-        [address],
-        [password],
-        [deleted]
+        [password]
     )
 VALUES 
     (
-        @role_id, 
         @fullname, 
-        @gender, 
         @email, 
-        @phone_num, 
-        @address, 
-        @password, 
-        @deleted
+        @password
     )
-
-SELECT * FROM [dbo].[users]
-WHERE [id]=id

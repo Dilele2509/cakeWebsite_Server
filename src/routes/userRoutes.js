@@ -5,8 +5,8 @@ const userController = require('../controllers/userController');
 const router = express.Router();
 
 router.get('/users', userController.getAllUsers);   
-router.get('/user/', userController.getUserById);
-router.post('/user/', userController.addUser);
+router.post('/user/id/', userController.getUserById);
+router.post('/user/add/', userController.addUser);
 router.put('/user/', userController.updateUser);
 router.delete('/user/', userController.deleteUser);
 
