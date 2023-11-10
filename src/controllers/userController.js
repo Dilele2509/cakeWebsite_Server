@@ -13,16 +13,36 @@ const getAllUsers = async (req, res, next) => {
     }
 }
 
-const getUserById = async (req, res, next) => {
+const getUserById = async (req, res) => {
     try {
-        const data = req.body;
-        const user = await userData.getById(data);
-        console.log(user, data);
-        res.send(user);
+        // Get userId from the cookie
+        const userId = req.cookies.userId;
+
+        // Check if userId is available
+        if (!userId) {
+            return res.status(401).send({
+                status: 'Error',
+                message: 'User ID not found in the cookie'
+            });
+        }
+        // Get user information based on userId
+        const user = await userData.getById(userId);
+
+        if (!user) {
+            return res.status(404).send({
+                status: 'Error',
+                message: 'User not found'
+            });
+        }
+        // Send user information in the response
+        return res.send({
+            status: 'OK',
+            user: user
+        });
     } catch (error) {
         res.status(400).send(error.message);
     }
-}
+};
 
 const addUser = async (req, res, next) => {
     

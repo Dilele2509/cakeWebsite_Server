@@ -10,23 +10,28 @@ const checkLogin = async (req, res, next) => {
         const check = await loginData.checkLogin(data);
         if(check === 1){
             const userInfo = await userData.getByEmail(data);
+            //console.log(userInfo[0].id);
+            // Set the user ID in a cookie
+            res.cookie('userId', userInfo[0].id,{ httpOnly: true });
             return res.send(userInfo);
         }else{
             const checkEmail = await userData.checkEmailExist(data.email);
             const checkPassword = await loginData.checkPassword(data.password);
             if(checkEmail !== 1){
                 return res.send({
-                    status: 'OK',
+                    status: 'Error',
+                    problem: 'Email',
                     message: 'This email does not exist'
                 })
             }else if(checkPassword !== 1){
                 return res.send({
-                    status: 'OK',
+                    status: 'Error',
+                    problem: 'Password',
                     message: 'Incorrect password'
                 })
             }else{
                 return res.send({
-                    status: 'OK',
+                    status: 'Error',
                     message: 'Have an error'
                 })
             }
@@ -36,6 +41,25 @@ const checkLogin = async (req, res, next) => {
     }
 }
 
+const checkLoginStatus = async (req, res, next) => {
+    const userId = req.cookies.userId;
+    // Check if userId is present in the cookie
+    if(userId){
+        res.send({
+            status: true,
+            message: 'logged'
+        })
+    }else{
+        res.send({
+            status: false,
+            message: 'not logged in yet'
+        })
+    }
+  
+    next();
+};
+
 module.exports = {
-    checkLogin
+    checkLogin,
+    checkLoginStatus
 }

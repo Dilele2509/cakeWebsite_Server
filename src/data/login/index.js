@@ -26,7 +26,7 @@ const checkPassword = async (password) => {
         const sqlQueries = await utils.loadSqlQueries('login/sql');
         const check = await pool.request()
                         .input('password', sql.VarChar, password)
-                        .query(sql.checkPassword);
+                        .query(sqlQueries.checkPassword);
         return check.recordset[0].Result;
     } catch (error) {
         return error.message;

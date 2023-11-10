@@ -4,7 +4,8 @@ UPDATE [dbo].[users]
     [email]=@email,
     [phone_num]=@phone_num,
     [address]=@address,
-    [password]=@password
+    [password]=@password,
+    [avatar]=@avatar
 WHERE [id]=@id
 
 SELECT * FROM [dbo].[users]

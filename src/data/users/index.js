@@ -16,12 +16,12 @@ const getUser = async () => {
     }
 }
 
-const getById = async(data) => {
+const getById = async(id) => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('users/sql');
         const event = await pool.request()
-                            .input('id', sql.Int, data.id)
+                            .input('id', sql.Int, id)
                             .query(sqlQueries.getUserById);
         return event.recordset;
     } catch (error) {
@@ -68,6 +68,7 @@ const updateUser = async (data) => {
                         .input('phone_num', sql.Char(10), data.phone_num)
                         .input('address', sql.NVarChar(50), data.address)
                         .input('passwork', sql.NVarChar(10), data.passwork)
+                        .input('avatar', sql.NVarChar, data.avatar)
                         .query(sqlQueries.updateUser);
         return update.recordset;
     } catch (error) {
