@@ -1,5 +1,6 @@
 INSERT INTO [dbo].[order_details]
     (
+        [user_id],
         [product_id],
         [product_size],
         [price],
@@ -7,6 +8,7 @@ INSERT INTO [dbo].[order_details]
     )
 VALUES 
     (
+        @user_id,
         @product_id,
         @product_size,
         @price,

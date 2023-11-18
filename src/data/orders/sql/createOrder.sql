@@ -4,16 +4,16 @@ INSERT INTO [dbo].[orders]
         [note],
         [order_date],
         [status],
-        [total],
+        [total]
     )
 VALUES 
     (
         @user_id,
         @note,
-        @order_date,
+        @order_date, 
         @status,
         @total
     )
 
 SELECT * FROM [dbo].[orders]
-WHERE [id]=id
+WHERE [id]=SCOPE_IDENTITY();

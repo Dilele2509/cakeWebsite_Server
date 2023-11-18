@@ -17,28 +17,28 @@ const getOrder = async () => {
     }
 }
 
-const getById = async(data) => {
+const getById = async(user_id) => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('orders/sql');
         const event = await pool.request()
-                            .input('id', sql.Int, data.id)
-                            .query(sqlQueries.getOrderById);
+                        .input('user_id', sql.Int, user_id)
+                        .query(sqlQueries.getOrderById);
         return event.recordset;
     } catch (error) {
         return error.message;
     }
 }
 
-const createOrder = async (data) => {
+const createOrder = async (user_id, order_date, data) => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('orders/sql');
         const insert = await pool.request()
-                            .input('user_id', sql.Int, data.user_id)
+                            .input('user_id', sql.Int, user_id)
                             .input('note', sql.NVarChar(50), data.note)
-                            .input('order_date', sql.DateTime, data.order_date)
-                            .input('status', sql.Int, data.status)
+                            .input('order_date', sql.DateTime, order_date)
+                            .input('status', sql.Int, 1)
                             .input('total', sql.Float, data.total)
                             .query(sqlQueries.createOrder);                            
         return insert.recordset;
@@ -79,7 +79,6 @@ const deleteOrder = async (data) => {
 }
 
 module.exports = {
-    /* exports các hàm get, getById, create, update, delete tương tự như bên roles/index.js */
     getOrder,
     getById,
     createOrder,

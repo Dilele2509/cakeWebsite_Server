@@ -59,7 +59,21 @@ const checkLoginStatus = async (req, res, next) => {
     next();
 };
 
+
+const logout = (req, res, next) => {
+    // Clear the userId cookie
+    res.clearCookie('userId');
+  
+    res.send({
+      status: true,
+      message: 'Logged out successfully',
+    });
+  
+    next();
+  };
+
 module.exports = {
     checkLogin,
-    checkLoginStatus
+    checkLoginStatus,
+    logout
 }

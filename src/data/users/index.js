@@ -57,19 +57,48 @@ const createUser = async (data) => {
     }
 }
 
-const updateUser = async (data) => {
+const updateUser = async (id, data) => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('users/sql');
         const update = await pool.request()
+                        .input('id', sql.Int, id)
                         .input('fullname', sql.NVarChar(50), data.fullname)
                         .input('gender', sql.NVarChar(50), data.gender)
                         .input('email', sql.VarChar, data.email)
                         .input('phone_num', sql.Char(10), data.phone_num)
                         .input('address', sql.NVarChar(50), data.address)
-                        .input('passwork', sql.NVarChar(10), data.passwork)
-                        .input('avatar', sql.NVarChar, data.avatar)
                         .query(sqlQueries.updateUser);
+        return update.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const updateUserPassword = async(id, password)=>{
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('users/sql');
+        const update = await pool.request()
+                        .input('id', sql.Int, id)
+                        .input('password', sql.NVarChar, password)
+                        .query(sqlQueries.updatePassword)
+
+        return update.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const updateUserAva = async (id, img) => {
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('users/sql');
+        const update = await pool.request()
+            .input('id', sql.Int, id)
+            .input('avatar', sql.NVarChar, img)
+            .query(sqlQueries.updateUserAva);
+
         return update.recordset;
     } catch (error) {
         return error.message;
@@ -91,12 +120,12 @@ const checkEmailExist = async(email) => {
     }
 }
 
-const deleteUser = async (data) => {
+const deleteUser = async (id) => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('users/sql');
         const deleteEvent = await pool.request()
-                            .input('id', sql.Int, data.id)
+                            .input('id', sql.Int, id)
                             .query(sqlQueries.deleteUser);
         return deleteEvent.recordset;
     } catch (error) {
@@ -110,6 +139,8 @@ module.exports = {
     getByEmail,
     createUser,
     updateUser,
+    updateUserPassword,
+    updateUserAva,
     deleteUser,
     checkEmailExist
 }

@@ -4,7 +4,6 @@ const config = require('../../../config');
 const sql = require('mssql');
 
 
-/* viết các hàm tương tự bên roles/index.js */
 const getOrderdetail = async () => {
     try {
         let pool = await sql.connect(config.sql);
@@ -17,69 +16,70 @@ const getOrderdetail = async () => {
     }
 }
 
-const getById = async(data) => {
+/* get order_detail by user id/ get cart */
+const getById = async(user_id,data) => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('order_details/sql');
         const event = await pool.request()
-                            .input('id', sql.Int, data.id)
+                            .input('user_id', sql.Int, user_id)
                             .query(sqlQueries.getOrderdetailById);
         return event.recordset;
     } catch (error) {
         return error.message;
     }
 }
-//sử dụng hàm này sau khi đã có đăng nhập
-/* const createOrderdetail = async (data) => {
+const checkProExist = async (user_id,data) => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('order_details/sql');
-        
-        // Trước hết, thực hiện kiểm tra xem dữ liệu đã tồn tại hay chưa
+        console.log('user_id: ',user_id);
+        console.log('product_id: ',data.product_id);
+        console.log('product_size: ',data.product_size);
         const checkData = await pool.request()
-            .input('user_id', sql.Int, data.user_id) 
+            .input('user_id', sql.Int, user_id) 
             .input('product_id', sql.Int, data.product_id)
             .input('product_size', sql.NVarChar, data.product_size)
             .query(sqlQueries.checkODExist);
-    
-        console.log('check data output:',checkData.recordset.length);
-
-        if (checkData.recordset.length > 0) {
-            // Dữ liệu đã tồn tại, thực hiện UPDATE
-            const update = await pool.request()
-                .input('user_id', sql.Int, data.user_id)
-                .input('product_id', sql.Int, data.product_id)
-                .input('product_size', sql.NVarChar, data.product_size)
-                .input('quantity', sql.Int, data.quantity)
-                .query(sqlQueries.updateQuantIfExist);
-            
-            return update; 
-        } else {
-            // Dữ liệu chưa tồn tại, thực hiện INSERT
-            const insert = await pool.request()
-                .input('user_id', sql.Int, data.user_id)
-                .input('product_id', sql.Int, data.product_id)
-                .input('product_size', sql.NVarChar, data.product_size)
-                .input('quantity', sql.Int, data.quantity)
-                .query(sqlQueries.createOrderdetail);
-            
-            return insert; // 
-        }
+        return checkData.recordset[0].Result;
     } catch (error) {
         return error.message;
     }
-} */
-const createOrderdetail = async (data) => {
+}
+
+const updateQuantIfExist = async (user_id,data) => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('order_details/sql');
+    
+        const update = await pool.request()
+                    .input('user_id', sql.Int, user_id)
+                    .input('product_id', sql.Int, data.product_id)
+                    .input('product_size', sql.NVarChar, data.product_size)
+                    .input('quantity', sql.Int, data.quantity)
+                    .query(sqlQueries.updateQuantIfExist);
+                
+        return update; 
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const createOrderdetail = async (user_id,data) => {
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('order_details/sql');
+
         const insert = await pool.request()
-                        .input('product_id', sql.Int, data.product_id)
-                        .input('product_size', sql.NVarChar, data.product_size)
-                        .input('price', sql.Float, data.price)
-                        .input('quantity', sql.Int, data.quantity)
-                        .query(sqlQueries.createOrderdetail);
-        return insert.recordset;
+            .input('user_id', sql.Int, user_id)
+            .input('product_id', sql.Int, data.product_id)
+            .input('product_size', sql.NVarChar, data.product_size)
+            .input('price', sql.Float, data.price)
+            .input('quantity', sql.Int, data.quantity)
+            .query(sqlQueries.createOrderdetail);
+        
+        return insert; 
+        
     } catch (error) {
         return error.message;
     }
@@ -115,6 +115,20 @@ const updateQuantOD = async(data)=>{
     }
 }
 
+const updateOrderId = async (user_id, order_id) =>{
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('order_details/sql');
+        const updated = await pool.request()
+                        .input('user_id', sql.Int, user_id)
+                        .input('order_id', sql.Int, order_id)
+                        .query(sqlQueries.updateOrderId);
+        return updated.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
 const deleteOrderdetail = async (data) => {
     try {
         let pool = await sql.connect(config.sql);
@@ -131,8 +145,11 @@ const deleteOrderdetail = async (data) => {
 module.exports = {
     getOrderdetail,
     getById,
+    checkProExist,
+    updateQuantIfExist,
     createOrderdetail,
     updateOrderdetail,
     updateQuantOD,
+    updateOrderId,
     deleteOrderdetail
 }

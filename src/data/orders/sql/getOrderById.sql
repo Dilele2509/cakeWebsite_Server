@@ -1,3 +1,3 @@
 SELECT *
 FROM [dbo].[orders]
-WHERE [id]=@id
+WHERE [user_id]=@user_id
