@@ -107,14 +107,27 @@ const updateSizeProduct = async (data) => {
     }
 }
 
-const deleteProduct = async (data) => {
+const deleteProduct = async (id) => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('products/sql');
         const deleteEvent = await pool.request()
-                            .input('id', sql.Int, data.id)
+                            .input('id', sql.Int, id)
                             .query(sqlQueries.deleteProduct);
         return deleteEvent.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const enableProduct = async (id) => {
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('products/sql');
+        const enable = await pool.request()
+                            .input('id', sql.Int, id)
+                            .query(sqlQueries.enableProduct);
+        return enable.recordset;
     } catch (error) {
         return error.message;
     }
@@ -127,5 +140,6 @@ module.exports = {
     createProduct,
     updateProduct,
     updateSizeProduct,
-    deleteProduct
+    deleteProduct,
+    enableProduct
 }

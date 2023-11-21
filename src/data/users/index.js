@@ -75,6 +75,24 @@ const updateUser = async (id, data) => {
     }
 }
 
+const updateUserInfo = async(data)=>{
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('users/sql');
+        const update = await pool.request()
+                        .input('id', sql.Int, data.id)
+                        .input('fullname', sql.NVarChar(50), data.fullname)
+                        .input('gender', sql.NVarChar(50), data.gender)
+                        .input('email', sql.VarChar, data.email)
+                        .input('phone_num', sql.Char(10), data.phone_num)
+                        .input('address', sql.NVarChar(50), data.address)
+                        .query(sqlQueries.updateUser);
+        return update.recordset;
+    } catch (error) {
+        return error.message
+    }
+}
+
 const updateUserPassword = async(id, password)=>{
     try {
         let pool = await sql.connect(config.sql);
@@ -133,14 +151,28 @@ const deleteUser = async (id) => {
     }
 }
 
+const enableUser = async(id) =>{
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('users/sql');
+        const deleteEvent = await pool.request()
+                            .input('id', sql.Int, id)
+                            .query(sqlQueries.enableUser);
+        return deleteEvent.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
 module.exports = {
     getUser,
     getById,
     getByEmail,
     createUser,
     updateUser,
+    updateUserInfo,
     updateUserPassword,
     updateUserAva,
     deleteUser,
+    enableUser,
     checkEmailExist
 }

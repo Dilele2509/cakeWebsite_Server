@@ -66,9 +66,19 @@ const updateSizeProduct = async (req, res, next) => {
 
 const deleteProduct = async (req, res, next) => {
     try {
-        const data = req.body;
-        const deleted = await productData.deleteProduct(data);
+        const id = req.body.id;
+        const deleted = await productData.deleteProduct(id);
         res.send(deleted);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+const enableProduct = async (req, res, next) =>{
+    try {
+        const id = req.body.id;
+        const enable = await productData.enableProduct(id);
+        res.send(enable);
     } catch (error) {
         res.status(400).send(error.message);
     }
@@ -81,5 +91,6 @@ module.exports = {
     addProduct, 
     updateProduct, 
     updateSizeProduct,
-    deleteProduct
+    deleteProduct,
+    enableProduct
 }

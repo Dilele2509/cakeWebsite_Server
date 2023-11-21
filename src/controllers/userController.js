@@ -76,6 +76,16 @@ const updateUser = async (req, res, next) => {
     }
 }
 
+const updateUserInfo = async (req, res, next) => {
+    try {
+        const data = req.body;
+        const updated = await userData.updateUserInfo(data);
+        res.send(updated);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 const updateUserPassword = async(req, res, next) =>{
     try {
         const password = req.body.password;
@@ -100,9 +110,19 @@ const updateUserAva = async (req, res, next) => {
 
 const deleteUser = async (req, res, next) => {
     try {
-        const id = req.cookies.userId;
+        const id = req.body.id;
         const deleted = await userData.deleteUser(id);
         res.send(deleted);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+const enableUser = async (req, res, next)=>{
+    try {
+        const id = req.body.id;
+        const enable = await userData.enableUser(id);
+        res.send(enable);
     } catch (error) {
         res.status(400).send(error.message);
     }
@@ -113,7 +133,9 @@ module.exports = {
     getUserById,
     addUser,
     updateUser,
+    updateUserInfo,
     updateUserPassword,
     updateUserAva,
-    deleteUser
+    deleteUser,
+    enableUser
 }
