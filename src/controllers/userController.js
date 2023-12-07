@@ -65,6 +65,36 @@ const addUser = async (req, res, next) => {
     }
 }
 
+const uploadAvatar = async (req, res, next) =>{
+    try {
+        const userId = req.body.userId;
+        // Check if file is uploaded
+        if (!req.file) {
+          return res.status(400).json({ message: 'No file uploaded' });
+        }
+    
+        // Get the file path
+        const filePath = 'public/assets/images/' + req.file?.filename;
+        const result = await userData.updateUserAva(userId, filePath);
+    
+        // Send the response
+        res.status(200).json({ message: 'Avatar uploaded successfully', user: result });
+      } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred' });
+      }
+}
+
+const resetPassword = async(req, res, next) =>{
+    try {
+        const {email, password} = req.body;
+        const reset = await userData.resetPassword(email, password);
+        res.send(reset);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 const updateUser = async (req, res, next) => {
     try {
         const data = req.body;
@@ -97,17 +127,6 @@ const updateUserPassword = async(req, res, next) =>{
     }
 }
 
-const updateUserAva = async (req, res, next) => {
-    try {
-        const img = req.body.avatar;
-        const id = req.cookies.userId;
-        const updated = await userData.updateUserAva(id, img);
-        res.send(updated);
-    } catch (error) {
-        res.status(400).send(error.message);
-    }
-}
-
 const deleteUser = async (req, res, next) => {
     try {
         const id = req.body.id;
@@ -128,6 +147,16 @@ const enableUser = async (req, res, next)=>{
     }
 }
 
+const removeAdmin = async(req, res, next)=>{
+    try {
+        const id = req.body.id;
+        const remove = await userData.removeAdmin(id);
+        res.send(remove);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
 module.exports = {
     getAllUsers,
     getUserById,
@@ -135,7 +164,9 @@ module.exports = {
     updateUser,
     updateUserInfo,
     updateUserPassword,
-    updateUserAva,
+    resetPassword,
+    uploadAvatar,
     deleteUser,
-    enableUser
+    enableUser,
+    removeAdmin
 }

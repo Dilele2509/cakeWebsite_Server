@@ -17,7 +17,7 @@ const getOrderdetail = async () => {
 }
 
 /* get order_detail by user id/ get cart */
-const getById = async(user_id,data) => {
+const getById = async(user_id) => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('order_details/sql');
@@ -27,6 +27,47 @@ const getById = async(user_id,data) => {
         return event.recordset;
     } catch (error) {
         return error.message;
+    }
+}
+
+const getODInOrder = async(order_id)=>{
+    try {
+        //console.log(order_id);
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('order_details/sql');
+        const event = await pool.request()
+                        .input('order_id', sql.Int, order_id)
+                        .query(sqlQueries.getODInOrder);
+        return event.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+//use this to get a product id list in user's cart before pay
+const getProIdInCart = async(user_id) =>{
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('order_details/sql');
+        const proId = await pool.request()
+                        .input('user_id', sql.Int, user_id)
+                        .query(sqlQueries.getProIdInCart);
+        return proId.recordset;
+    } catch (error) {
+        return error.message;;
+    }
+}
+
+const getOrderQuantInOrder = async(order_id) =>{
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('order_details/sql');
+        const orderQuant = await pool.request()
+                        .input('order_id', sql.Int, order_id)
+                        .query(sqlQueries.getOrderQuantInOrder);
+        return orderQuant.recordset;
+    } catch (error) {
+        return error.message;;
     }
 }
 const checkProExist = async (user_id,data) => {
@@ -145,6 +186,9 @@ const deleteOrderdetail = async (data) => {
 module.exports = {
     getOrderdetail,
     getById,
+    getODInOrder,
+    getProIdInCart,
+    getOrderQuantInOrder,
     checkProExist,
     updateQuantIfExist,
     createOrderdetail,

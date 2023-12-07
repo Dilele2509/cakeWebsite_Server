@@ -1,5 +1,5 @@
 UPDATE [dbo].[users]
-SET [avatar]=@img
+SET [avatar]=@avatar
 WHERE [id]=@id
 
 SELECT * FROM [dbo].[users]

@@ -4,6 +4,9 @@ const config = require('./config');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const multer = require('multer');
+const { fileURLToPath } = require("url");
+const path = require("path");
 
 
 //const for routes
@@ -27,7 +30,24 @@ app.use(cors({
 app.use(bodyParser.json());
 app.use(cookieParser());
 
+//file storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/assets/images/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, file.originalname);
+  }
+});
+
+const upload = multer({ storage: storage });
+const userController = require('./src/controllers/userController'); 
+const productController = require('./src/controllers/productController');
+
 //link to the routes of each type
+app.use("/public", express.static(path.join(__dirname, "public")));
+app.post('/api/add-product', upload.single("thumbnail"), productController.addProduct);
+app.post('/api/user/upload/', upload.single("avatar"), userController.uploadAvatar);
 app.use('/api/', loginRoutes.routes);
 app.use('/api/', roleRoutes.routes);
 app.use('/api/', userRoutes.routes);

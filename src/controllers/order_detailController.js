@@ -16,10 +16,29 @@ const getAllOrderdetails = async (req, res, next) => {
 
 const getOrderdetailById = async (req, res, next) => {
     try {
-        const data = req.body;
         const user_id = req.cookies.userId;
-        const orderdetail = await orderdetailData.getById(user_id,data);
-        console.log(orderdetail, data);
+        const orderdetail = await orderdetailData.getById(user_id);
+        //console.log(orderdetail, data);
+        res.send(orderdetail);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+const getODInOrder = async(req, res, next)=>{
+    try {
+        const order_id = req.body.order_id;
+        const orderdetail = await orderdetailData.getODInOrder(order_id);
+        res.send(orderdetail);
+    } catch (error) {
+        res.status(400).send(error.message);
+    }
+}
+
+const getODAdmin = async(req, res, next)=>{
+    try {
+        const order_id = req.body.order_id;
+        const orderdetail = await orderdetailData.getODInOrder(order_id);
         res.send(orderdetail);
     } catch (error) {
         res.status(400).send(error.message);
@@ -89,6 +108,8 @@ const deleteOrderdetail = async (req, res, next) => {
 module.exports = {
     getAllOrderdetails,
     getOrderdetailById,
+    getODInOrder,
+    getODAdmin,
     addOrderdetail,
     updateOrderdetail,
     updateQuantOD,

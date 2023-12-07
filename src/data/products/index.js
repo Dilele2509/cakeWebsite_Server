@@ -43,6 +43,20 @@ const getByCat = async (data) => {
     }
 }
 
+const searchProduct = async (title) => {
+    try {
+        //console.log(title);
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('products/sql');
+        const event = await pool.request()
+                            .input('title', sql.NVarChar, `%${title}%`)
+                            .query(sqlQueries.searchProduct);
+        return event.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
 const createProduct = async (data) => {
     try {
         let pool = await sql.connect(config.sql);
@@ -52,16 +66,29 @@ const createProduct = async (data) => {
                             .input('title', sql.NVarChar(50), data.title)
                             .input('price', sql.Float, data.price)
                             .input('size', sql.NVarChar(50), data.size)
-                            .input('size_price', sql.Float, data.size_price)
                             .input('ingredients', sql.Text, data.ingredients)
                             .input('discount_price', sql.Float, data.discount_price)
-                            .input('thumbnail', sql.NVarChar(50), data.thumbnail)
                             .input('description', sql.Text, data.description)
                             .input('quantity', sql.Int, data.quantity)
-                            .input('total', sql.Float, data.total)
-                            .input('deleted', sql.TinyInt, data.deleted)
                             .query(sqlQueries.createProduct);                            
+                            console.log("insert in data layer: ", insert.recordset);
         return insert.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const updateProImg = async (id, thumbnail) => {
+    try {
+        console.log("id: ", id, "thumbnail: ", thumbnail);
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('products/sql');
+        const update = await pool.request()
+            .input('id', sql.Int, id)
+            .input('thumbnail', sql.NVarChar, thumbnail)
+            .query(sqlQueries.updateProImg);
+
+        return update.recordset;
     } catch (error) {
         return error.message;
     }
@@ -78,10 +105,10 @@ const updateProduct = async (data) => {
                         .input('price', sql.Float, data.price)
                         .input('size', sql.NVarChar(50), data.size)
                         .input('size_price', sql.Float, data.size_price)
-                        .input('ingredients', sql.NVarChar(50), data.ingredients)
+                        .input('ingredients', sql.Text, data.ingredients)
                         .input('discount_price', sql.Float, data.discount_price)
                         .input('thumbnail', sql.NVarChar(50), data.thumbnail)
-                        .input('description', sql.NVarChar(sql.MAX), data.description)
+                        .input('description', sql.Text, data.description)
                         .input('quantity', sql.Int, data.quantity)
                         .input('total', sql.Float, data.total)
                         .input('deleted', sql.TinyInt, data.deleted)
@@ -137,7 +164,9 @@ module.exports = {
     getProduct,
     getById,
     getByCat,
+    searchProduct,
     createProduct,
+    updateProImg,
     updateProduct,
     updateSizeProduct,
     deleteProduct,

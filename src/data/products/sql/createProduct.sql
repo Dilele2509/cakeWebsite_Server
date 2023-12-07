@@ -4,13 +4,10 @@ INSERT INTO [dbo].[products]
         [title],
         [price],
         [size],
-        [size_price],
         [ingredients],
         [discount_price],
-        [thumbnail],
         [description],
         [quantity],
-        [total],
         [deleted]
     )
 VALUES 
@@ -19,15 +16,12 @@ VALUES
         @title,
         @price,
         @size,
-        @size_price,
         @ingredients,
         @discount_price,
-        @thumbnail,
         @description,
         @quantity,
-        @total,
-        @deleted
+        0
     )
 
 SELECT * FROM [dbo].[products]
-WHERE [id]=id
+WHERE [id]=SCOPE_IDENTITY();

@@ -3,4 +3,4 @@ SET [order_id]=@order_id
 WHERE [user_id]=@user_id AND order_id is NULL
 
 SELECT * FROM [dbo].[order_details]
-WHERE [id]=SCOPE_IDENTITY();
+WHERE [order_id]=@order_id;

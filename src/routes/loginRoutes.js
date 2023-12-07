@@ -7,6 +7,8 @@ const router = express.Router();
 router.post('/login', loginController.checkLogin);
 router.get('/login/check-status/', loginController.checkLoginStatus);
 router.get('/logout', loginController.logout);
+router.post('/login/forgot-sendmail', loginController.forgotSendmail);
+router.post('/login/check-code', loginController.checkConfirmCode)
 
 
 module.exports = {

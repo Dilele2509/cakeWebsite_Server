@@ -3,8 +3,6 @@ const utils = require('../utils');
 const config = require('../../../config');
 const sql = require('mssql');
 
-
-/* viết các hàm tương tự bên roles/index.js */
 const getFeedback = async () => {
     try {
         let pool = await sql.connect(config.sql);
@@ -22,7 +20,7 @@ const getById = async(data) => {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('feedbacks/sql');
         const event = await pool.request()
-                            .input('id', sql.Int, data.id)
+                            .input('product_id', sql.Int, data.product_id)
                             .query(sqlQueries.getFeedbackById);
         return event.recordset;
     } catch (error) {
@@ -30,15 +28,13 @@ const getById = async(data) => {
     }
 }
 
-const createFeedback = async (data) => {
+const createFeedback = async (data, user_id) => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('feedbacks/sql');
         const insert = await pool.request()
-                            .input('user_id', sql.Int, data.user_id)
-                            .input('fullname', sql.NVarChar(50), data.fullname)
-                            .input('email', sql.NVarChar(50), data.email)
-                            .input('phone_number', sql.Char(10), data.phone_number)
+                            .input('product_id', sql.Int, data.product_id)
+                            .input('user_id', sql.Int, user_id)
                             .input('note', sql.NVarChar(sql.MAX), data.note)
                             .query(sqlQueries.createFeedback);                            
         return insert.recordset;

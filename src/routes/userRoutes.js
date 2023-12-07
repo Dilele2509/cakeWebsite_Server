@@ -10,10 +10,10 @@ router.post('/user/add/', userController.addUser);
 router.put('/user/info/', userController.updateUser); //for user/admin update them self
 router.put('/user/update/', userController.updateUserInfo);  //for admin update user's info
 router.put('/user/security/', userController.updateUserPassword);
-router.put('/user/avatar/', userController.updateUserAva);
+router.put('/user/reset/', userController.resetPassword);
 router.put('/user/disable', userController.deleteUser);    //update deleted = 1
 router.put('/user/enable', userController.enableUser); //use for admin enable user
-
+router.put('/user/remove-admin/', userController.removeAdmin); //to change admin to normal user
 
 module.exports = {
     routes: router

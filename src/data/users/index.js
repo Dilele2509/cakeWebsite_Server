@@ -47,6 +47,7 @@ const createUser = async (data) => {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('users/sql');
         const insert = await pool.request()
+                            .input('role_id', sql.Int, data.role_id) 
                             .input('fullname', sql.NVarChar(50), data.fullname)
                             .input('email', sql.VarChar, data.email)
                             .input('password', sql.NVarChar(10), data.password)
@@ -108,16 +109,32 @@ const updateUserPassword = async(id, password)=>{
     }
 }
 
-const updateUserAva = async (id, img) => {
+const updateUserAva = async (id, avatar) => {
     try {
+        //console.log("id: ", id, "avatar: ", avatar);
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('users/sql');
         const update = await pool.request()
             .input('id', sql.Int, id)
-            .input('avatar', sql.NVarChar, img)
-            .query(sqlQueries.updateUserAva);
+            .input('avatar', sql.NVarChar, avatar)
+            .query(sqlQueries.updateAva);
 
         return update.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
+
+const resetPassword = async(email, password)=>{
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('users/sql');
+        const reset = await pool.request()
+                        .input('email', sql.VarChar, email)
+                        .input('password', sql.NVarChar, password)
+                        .query(sqlQueries.resetPassword)
+
+        return reset.recordset;
     } catch (error) {
         return error.message;
     }
@@ -163,6 +180,19 @@ const enableUser = async(id) =>{
         return error.message;
     }
 }
+
+const removeAdmin = async(id) =>{
+    try {
+        let pool = await sql.connect(config.sql);
+        const sqlQueries = await utils.loadSqlQueries('users/sql');
+        const remove = await pool.request()
+                            .input('id', sql.Int, id)
+                            .query(sqlQueries.removeAdmin);
+        return remove.recordset;
+    } catch (error) {
+        return error.message;
+    }
+}
 module.exports = {
     getUser,
     getById,
@@ -171,8 +201,10 @@ module.exports = {
     updateUser,
     updateUserInfo,
     updateUserPassword,
+    resetPassword,
     updateUserAva,
     deleteUser,
     enableUser,
-    checkEmailExist
+    checkEmailExist,
+    removeAdmin
 }

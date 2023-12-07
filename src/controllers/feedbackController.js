@@ -28,7 +28,8 @@ const getFeedbackById = async (req, res, next) => {
 const addFeedback = async (req, res, next) => {
     try {
         const data = req.body;
-        const insert = await feedbackData.createFeedback(data);
+        const user_id = req.cookies.userId;
+        const insert = await feedbackData.createFeedback(data, user_id);
         res.send(insert);
     } catch (error) {
         res.status(400).send(error.message);

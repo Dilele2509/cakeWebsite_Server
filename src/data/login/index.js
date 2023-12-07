@@ -33,7 +33,39 @@ const checkPassword = async (password) => {
     }
 }
 
+const checkConfirmCode = async(inputCode, code) =>{
+    try {
+        if(inputCode === code){
+            return 1;
+        }else{
+            return 0;
+        }
+    } catch (error) {
+        return error.message;
+    }
+}
+
+
+const confirmCode = async () => {
+    try {
+        const code = ()=>{
+            let strCode = ""
+            for(let i = 0; i<= 5; i++){
+                let randomItem = Math.floor(Math.random() * 10).toString();
+                strCode = strCode + randomItem;
+                //console.log(strCode);
+            }
+            return strCode
+        }
+        return code();
+    } catch (error) {
+        return error.message;
+    }
+}
+
 module.exports = {
     checkLogin,
-    checkPassword
+    checkPassword,
+    confirmCode,
+    checkConfirmCode
 }

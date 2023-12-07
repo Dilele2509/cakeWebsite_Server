@@ -1,17 +1,13 @@
 INSERT INTO [dbo].[feedbacks]
     (
+        [product_id],
         [user_id],
-        [fullname],
-        [email],
-        [phone_number],
         [note]
     )
 VALUES 
     (
-        @role_name,
-        @fullname,
-        @email,
-        @phone_number,
+        @product_id,
+        @user_id,
         @note
     )
 
