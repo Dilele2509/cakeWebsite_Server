@@ -75,23 +75,24 @@ const forgotSendmail = async (req, res) => {
 
     async function getConfirmationCode() {
         const code = await loginData.confirmCode();
+         
+        let html = `<h2>This is the confirmation code to reset your password,</h2>
+        <p>Please do not share this code with anyone.</p>
+        <b style"display: block">Your confirmation code: <h4 style="color: red; display: inline-block">${code}</h4></b>
+        <p>Thanks for giving us your feedback. If you need support, please contact via the link below:</p>
+        <p>https://www.facebook.com/dhspkt.hcmute</p>
+        <img style="max-width: 450px;" src='https://sectona.com/wp-content/uploads/2022/09/Password-Rotation-PAM-101-Featured-Image.png' alt='security-img'></img>`;
     
-        let text = `This is the confirmation code to reset your password, please do not share it with anyone. 
-Thank you for sending us your inquiry. 
-        
-Confirmation code: ${code}`;
-    
-        return {text, code};
+        return {html, code};
     }
     
-    // Use the function like this:
     const subject = 'Password recovery confirmation code';
-    getConfirmationCode().then(({text, code}) => {
+    getConfirmationCode().then(({html, code}) => {
         let mailOptions = {
             from: 'levy3443@gmail.com',
             to: to,
             subject: subject,
-            text: text
+            html: html
         };
     
         transporter.sendMail(mailOptions, (error, info) => {

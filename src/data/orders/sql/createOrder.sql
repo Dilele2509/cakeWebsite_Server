@@ -2,6 +2,7 @@ INSERT INTO [dbo].[orders]
     (
         [user_id],
         [note],
+        [receiver],
         [receiver_phone],
         [delivery_address],
         [order_date],
@@ -14,6 +15,7 @@ VALUES
     (
         @user_id,
         @note,
+        @receiver,
         @receiver_phone,
         @delivery_address,
         @order_date, 

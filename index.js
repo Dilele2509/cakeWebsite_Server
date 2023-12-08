@@ -5,14 +5,12 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const multer = require('multer');
-const { fileURLToPath } = require("url");
 const path = require("path");
-
 
 //const for routes
 const categoryRoutes = require('./src/routes/categoryRoutes');
 const feedbackRoutes = require('./src/routes/feedbackRoutes');
-const manage_galleryRoutes = require('./src/routes/manage_galleryRoutes');
+const newsletterRoutes = require('./src/routes/newsletterRoutes');
 const order_detailRoutes = require('./src/routes/order_detailRoutes');
 const orderRoutes = require('./src/routes/orderRoutes');
 const productRoutes = require('./src/routes/productRoutes');
@@ -24,7 +22,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: 'http://cakeshop.gun.vn:3000',
+  origin: 'http://localhost:3000',
   credentials: true,
 }));
 app.use(bodyParser.json());
@@ -54,11 +52,11 @@ app.use('/api/', userRoutes.routes);
 app.use('/api/', categoryRoutes.routes);
 app.use('/api/', feedbackRoutes.routes);
 app.use('/api/', orderRoutes.routes);
-app.use('/api/', manage_galleryRoutes.routes);
+app.use('/api/', newsletterRoutes.routes);
 app.use('/api/', order_detailRoutes.routes);
 app.use('/api/', productRoutes.routes);
 
 
 app.listen(config.port, () => {
-  console.log('app listening on url http://cakeshop.gun.vn:' + config.port )
+  console.log('app listening on url http://localhost:' + config.port )
 });

@@ -4,12 +4,11 @@ const config = require('../../../config');
 const sql = require('mssql');
 
 
-/* viết các hàm tương tự bên roles/index.js */
 const getOrder = async () => {
     try {
         let pool = await sql.connect(config.sql);
         const sqlQueries = await utils.loadSqlQueries('orders/sql');
-        console.log(sqlQueries);
+        //console.log(sqlQueries);
         const orderList = await pool.request().query(sqlQueries.orderList);
         return orderList.recordset;
     } catch (error) {
@@ -63,7 +62,8 @@ const createOrder = async (user_id, order_date, data) => {
         const insert = await pool.request()
                             .input('user_id', sql.Int, user_id)
                             .input('note', sql.NVarChar(50), data.note)
-                            .input('receiver_phone', sql.NChar(10), data.receiver_phone)
+                            .input('receiver', sql.NVarChar(50), data.receiver)
+                            .input('receiver_phone', sql.Char(10), data.receiver_phone)
                             .input('delivery_address', sql.NVarChar(sql.MAX), data.delivery_address)
                             .input('order_date', sql.DateTime, order_date)
                             .input('payment_method', sql.NVarChar(50), data.payment_method)
@@ -85,6 +85,7 @@ const updateOrder = async (data) => {
                         .input('id', sql.Int, data.id)
                         .input('user_id', sql.Int, data.user_id)
                         .input('note', sql.NVarChar(50), data.note)
+                        .input('receiver', sql.NVarChar(50), data.receiver)
                         .input('receiver_phone', sql.NChar(10), data.receiver_phone)
                         .input('delivery_address', sql.NVarChar(sql.MAX), data.delivery_address)
                         .input('order_date', sql.DateTime, data.order_date)
