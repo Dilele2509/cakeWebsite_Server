@@ -24,7 +24,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'http://cakeshop.gun.vn:3000',
   credentials: true,
 }));
 app.use(bodyParser.json());
@@ -60,5 +60,5 @@ app.use('/api/', productRoutes.routes);
 
 
 app.listen(config.port, () => {
-  console.log('app listening on url http://localhost:' + config.port )
+  console.log('app listening on url http://cakeshop.gun.vn:' + config.port )
 });
